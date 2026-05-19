@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#270404" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" type="image/png" href="https://i.ibb.co/ds68rJqr/chop.png" />
+  <link rel="apple-touch-icon" href="https://i.ibb.co/ds68rJqr/chop.png" />
   <title>Chop – Taste the Vibe</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -21,6 +23,88 @@
       --shadow: 0 8px 32px rgba(39,4,4,0.18);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ===== PRELOADER ===== */
+    .preloader {
+      position: fixed; inset: 0; z-index: 99999;
+      background: linear-gradient(135deg, #270404 0%, #1a0303 50%, #0d0101 100%);
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .preloader-content { text-align: center; position: relative; }
+    .preloader-logo-wrap { position: relative; display: inline-block; margin-bottom: 1.2rem; }
+    .preloader-logo {
+      width: 100px; height: 100px; object-fit: contain;
+      border-radius: 22px; position: relative; z-index: 2;
+      animation: preloaderPop 2s ease-in-out infinite;
+    }
+    @keyframes preloaderPop {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .preloader-pulse {
+      position: absolute; inset: -16px; border-radius: 38px;
+      background: radial-gradient(circle, rgba(255,0,0,0.4) 0%, transparent 70%);
+      animation: preloaderPulse 1.5s ease-in-out infinite;
+      z-index: 1;
+    }
+    @keyframes preloaderPulse {
+      0%,100% { transform: scale(0.92); opacity: 0.5; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+    .preloader-brand {
+      font-size: 2.2rem; font-weight: 900; color: #fff;
+      letter-spacing: 2px; margin-bottom: 0.2rem;
+    }
+    .preloader-brand span { color: var(--amber); }
+    .preloader-tagline {
+      font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.4);
+      letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .preloader-dots { display: flex; justify-content: center; gap: 8px; }
+    .preloader-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--amber);
+      animation: dotBounce 1.2s ease-in-out infinite;
+    }
+    .preloader-dot:nth-child(1) { animation-delay: 0s; }
+    .preloader-dot:nth-child(2) { animation-delay: 0.15s; }
+    .preloader-dot:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes dotBounce {
+      0%,80%,100% { transform: translateY(0); opacity: 0.4; }
+      40% { transform: translateY(-14px); opacity: 1; }
+    }
+
+    /* ===== GLOBAL LOADING OVERLAY ===== */
+    .global-loading-overlay {
+      position: fixed; inset: 0; z-index: 99998;
+      background: rgba(39,4,4,0.85); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    .global-loading-overlay.show { opacity: 1; visibility: visible; pointer-events: all; }
+    .global-loading-box { text-align: center; }
+    .global-loading-spinner-wrap { position: relative; display: inline-block; margin-bottom: 1.2rem; }
+    .global-loading-logo {
+      width: 64px; height: 64px; object-fit: contain;
+      border-radius: 14px; position: relative; z-index: 2;
+    }
+    .global-loading-spinner {
+      position: absolute; inset: -12px; border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--amber);
+      border-right-color: var(--red);
+      animation: globalSpin 0.8s linear infinite;
+      z-index: 1;
+    }
+    @keyframes globalSpin { to { transform: rotate(360deg); } }
+    .global-loading-text {
+      font-size: 0.9rem; font-weight: 700; color: #fff;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
     html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -829,6 +913,14 @@
     .toast i { color: var(--amber); }
 
     /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .preloader-logo { width: 70px; height: 70px; border-radius: 16px; }
+      .preloader-brand { font-size: 1.6rem; }
+      .preloader-tagline { font-size: 0.7rem; letter-spacing: 2px; }
+      .preloader-dot { width: 7px; height: 7px; }
+      .global-loading-logo { width: 48px; height: 48px; border-radius: 10px; }
+    }
+
     @media (max-width: 1200px) {
       .hero-glow { width: 340px; height: 340px; }
     }
@@ -860,10 +952,8 @@
       #deals, #menu, #about, #contact { padding: 3.5rem 1.2rem; }
       .about-img-stack { height: 220px; }
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
-      #cart-sidebar { width: 100%; max-width: 100vw; }
       .feedback-grid { grid-template-columns: 1fr; }
       .feedback-full { grid-column: span 1; }
-      .cart-bar-right .btn-view-cart { display: none; }
       .category-tabs { gap: 0.5rem; }
       .tab-btn { padding: 8px 14px; font-size: 0.75rem; }
       .menu-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
@@ -873,18 +963,32 @@
       .food-card-img-wrap { height: 170px; }
       .contact-cards { grid-template-columns: 1fr; }
       .section-title { font-size: 1.6rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .footer-bottom-right { justify-content: center; }
+
+      /* Cart sidebar full-width on tablet */
+      #cart-sidebar { width: 100%; max-width: 100vw; }
+      .cart-bar-right .btn-view-cart { display: none; }
       .cart-tab { font-size: 0.7rem; padding: 10px 6px; }
       .cart-bar-total { font-size: 0.95rem; }
       .btn-checkout-bar { padding: 8px 16px; font-size: 0.75rem; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      .footer-bottom-right { justify-content: center; }
-      #receiptModal .modal-box { margin: 0 0.5rem; max-height: 85vh; }
+      .cart-header { padding: 1rem 1.2rem; }
+      .cart-body { padding: 0.8rem 1.2rem; }
+      .cart-footer { padding: 0.8rem 1.2rem; }
+      .form-group input, .form-group select, .form-group textarea { font-size: 16px; padding: 12px 14px; }
+      .checkout-form { padding-bottom: 0.5rem; }
+      .form-section-title { font-size: 0.76rem; margin: 1rem 0 0.6rem; }
+
+      /* Receipt modal */
+      #receiptModal .modal-box { margin: 0 0.5rem; max-height: 85vh; border-radius: 20px; }
       .receipt-header { padding: 1.2rem; }
       .receipt-body { padding: 1rem; }
+      .receipt-logo { font-size: 1.5rem; }
     }
     @media (max-width: 480px) {
       #navbar { padding: 0 0.8rem; height: 60px; }
       .nav-logo-icon { width: 36px; height: 36px; border-radius: 10px; }
+      .nav-logo-icon img { object-fit: contain; }
       .nav-logo-text { font-size: 1.2rem; }
       .hero-title { font-size: 1.9rem; }
       .hero-content { padding: 1.5rem 0.8rem; }
@@ -898,13 +1002,6 @@
       .hero-stat-label { font-size: 0.65rem; }
       .hero-desc { font-size: 0.85rem; }
       .deals-grid { grid-template-columns: 1fr; }
-      #cart-bar { padding: 0.7rem 0.8rem; }
-      .cart-bar-info { gap: 0.5rem; }
-      .cart-bar-icon { width: 36px; height: 36px; border-radius: 10px; font-size: 0.9rem; }
-      .btn-checkout-bar { padding: 7px 12px; font-size: 0.7rem; }
-      .btn-checkout-bar i { font-size: 0.7rem; }
-      .cart-bar-count { font-size: 0.7rem; }
-      .cart-bar-total { font-size: 0.88rem; }
       .food-card-img-wrap { height: 150px; }
       .food-card-body { padding: 1rem; }
       .food-name { font-size: 0.9rem; }
@@ -923,14 +1020,76 @@
       .section-tag { font-size: 0.65rem; }
       .contact-card { padding: 1rem; }
       .modal-box { border-radius: 20px; }
+
+      /* === CART SIDEBAR MOBILE === */
+      #cart-sidebar { width: 100%; max-width: 100vw; border-radius: 0; }
+      .cart-header { padding: 1rem; }
+      .cart-header h3 { font-size: 1rem; }
+      .cart-body { padding: 0.6rem 1rem; }
+      .cart-tab { font-size: 0.68rem; padding: 10px 4px; letter-spacing: 0; }
+      .cart-item { gap: 0.7rem; padding: 0.8rem 0; }
+      .cart-item-img { width: 52px; height: 52px; border-radius: 10px; }
+      .cart-item-name { font-size: 0.8rem; }
+      .cart-item-price { font-size: 0.8rem; }
+      .cart-qty-btn { width: 24px; height: 24px; border-radius: 6px; font-size: 0.75rem; }
+      .cart-qty-num { font-size: 0.8rem; }
+      .cart-item-remove { font-size: 0.8rem; }
+      .cart-summary-box { padding: 0.8rem; border-radius: 12px; }
+      .cart-summary-row { font-size: 0.78rem; }
+      .cart-footer { padding: 0.7rem 1rem; }
+      .btn-whatsapp-order { padding: 12px; font-size: 0.85rem; border-radius: 12px; }
+      .checkout-form { padding-bottom: 0; }
+      .form-group { margin-bottom: 0.6rem; }
+      .form-group label { font-size: 0.7rem; }
+      .form-group input, .form-group select, .form-group textarea { font-size: 16px; padding: 11px 12px; border-radius: 10px; }
+      .form-section-title { font-size: 0.72rem; margin: 0.8rem 0 0.5rem; }
+
+      /* === STICKY CART BAR MOBILE === */
+      #cart-bar { padding: 0.7rem 0.8rem; }
+      .cart-bar-info { gap: 0.5rem; }
+      .cart-bar-icon { width: 36px; height: 36px; border-radius: 10px; font-size: 0.9rem; }
+      .btn-checkout-bar { padding: 7px 12px; font-size: 0.7rem; }
+      .btn-checkout-bar i { font-size: 0.7rem; }
+      .cart-bar-count { font-size: 0.7rem; }
+      .cart-bar-total { font-size: 0.88rem; }
+
+      /* === PAYMENT MODAL MOBILE === */
+      .pay-modal-box { max-width: 100%; margin: 0; border-radius: 24px 24px 16px 16px; max-height: 93vh; }
+      .pay-amount-value { font-size: 2rem; }
+      .pay-amount-card { margin: 0.8rem 1rem; padding: 1rem; }
+      .pay-header { padding: 1rem 1rem 0; }
+      .pay-body { padding: 0.3rem 1rem 0.8rem; }
+      .pay-pin-grid { gap: 10px; }
+      .pay-pin-cell { width: 44px; height: 50px; font-size: 1.2rem; border-radius: 12px; }
+      .pay-num-input { font-size: 0.95rem; }
+      .pay-action-btn { padding: 14px; font-size: 0.9rem; border-radius: 14px; }
+      .pay-spinner { width: 52px; height: 52px; border-width: 4px; }
+      .pay-push-icon { font-size: 1.6rem; }
+
+      /* === RECEIPT MOBILE === */
+      #receiptModal .modal-box { margin: 0 auto; width: 95%; max-height: 88vh; border-radius: 20px; }
+      .receipt-header { padding: 1rem; }
+      .receipt-check { width: 48px; height: 48px; font-size: 1.3rem; }
+      .receipt-body { padding: 0.8rem 1rem; }
+      .receipt-item { font-size: 0.8rem; }
+      .receipt-whatsapp-btn { padding: 12px; font-size: 0.85rem; }
     }
-    @media (max-width: 360px) {
+    @media (max-width: 380px) {
       .menu-grid { grid-template-columns: 1fr; }
-      .hero-food-img { max-width: 180px; }
-      .hero-title { font-size: 1.6rem; }
-      .hero-subtitle { font-size: 0.85rem; }
-      .tab-btn { padding: 6px 8px; font-size: 0.65rem; }
+      .hero-food-img { max-width: 170px; }
+      .hero-title { font-size: 1.65rem; }
+      .hero-subtitle { font-size: 0.8rem; }
+      .tab-btn { padding: 6px 9px; font-size: 0.62rem; }
       .food-card-img-wrap { height: 180px; }
+      .cart-tab { font-size: 0.62rem; padding: 8px 2px; }
+      .pay-pin-cell { width: 40px; height: 46px; font-size: 1.1rem; gap: 8px; }
+      .pay-pin-grid { gap: 7px; }
+      .pay-amount-value { font-size: 1.7rem; }
+    }
+    @media (max-width: 320px) {
+      .pay-pin-cell { width: 36px; height: 42px; font-size: 1rem; border-radius: 10px; }
+      .pay-pin-grid { gap: 6px; }
+      .cart-tab { font-size: 0.58rem; padding: 8px 1px; }
     }
     .slide-up { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
     .slide-up.visible { opacity: 1; transform: translateY(0); }
@@ -954,98 +1113,189 @@
     .pay-info small { font-size: 0.73rem; color: rgba(39,4,4,0.5); }
     .pay-tick { padding: 0 14px; font-size: 1rem; }
 
-    /* ===== PAYMENT MODAL (MTN / Telecel Style) ===== */
+    /* ===== PAYMENT MODAL — JUMIA / KiKUU STYLE ===== */
     .pay-modal-box {
-      background: #fff; border-radius: 28px; max-width: 440px; width: 100%;
+      background: #fff; border-radius: 24px; max-width: 440px; width: calc(100% - 2rem);
       overflow: hidden; transform: scale(0.9) translateY(20px);
       transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-      max-height: 92vh; overflow-y: auto;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+      max-height: 95vh; overflow-y: auto;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+      margin: 0 auto;
     }
     .modal-overlay.show .pay-modal-box { transform: scale(1) translateY(0); }
-    .pay-modal-header {
-      padding: 1.2rem 1.5rem; display: flex; align-items: center; gap: 12px;
-      color: #000; position: relative;
+    .pay-top-bar {
+      height: 6px; transition: background 0.3s;
+    }
+    .pay-close-btn {
+      position: absolute; top: 16px; right: 16px; z-index: 5;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(0,0,0,0.07); border: none; cursor: pointer;
+      font-size: 0.9rem; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .pay-close-btn:hover { background: rgba(0,0,0,0.15); transform: scale(1.05); }
+    .pay-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 1.2rem 1.5rem 0;
     }
     .pay-brand-icon {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: rgba(0,0,0,0.1);
+      width: 42px; height: 42px; border-radius: 12px;
+      background: rgba(0,0,0,0.07);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; font-weight: 900; flex-shrink: 0;
+      font-size: 1.1rem; font-weight: 900; flex-shrink: 0;
     }
-    .pay-brand-name { font-size: 1rem; font-weight: 800; }
-    .pay-brand-sub { font-size: 0.7rem; font-weight: 500; opacity: 0.65; }
-    .pay-close-btn {
-      position: absolute; top: 12px; right: 12px;
-      width: 32px; height: 32px; border-radius: 8px;
-      background: rgba(0,0,0,0.08); border: none; cursor: pointer;
-      font-size: 0.85rem; display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s;
+    .pay-brand-name { font-size: 1rem; font-weight: 800; color: var(--dark); flex:1; }
+    .pay-brand-badge {
+      font-size: 0.6rem; font-weight: 800; letter-spacing: 1px;
+      padding: 4px 10px; border-radius: 50px;
+      background: #25D366; color: #fff;
     }
-    .pay-close-btn:hover { background: rgba(0,0,0,0.15); }
-    .pay-body { padding: 1.2rem 1.5rem 1.5rem; }
     .pay-amount-card {
-      background: linear-gradient(135deg, rgba(39,4,4,0.05), rgba(39,4,4,0.02));
-      border: 1.5px solid rgba(39,4,4,0.08); border-radius: 18px;
-      padding: 1.2rem; text-align: center; margin-bottom: 1.2rem;
+      margin: 1rem 1.5rem; padding: 1.2rem;
+      background: linear-gradient(145deg, #fafafa, #f0f0f0);
+      border: 1px solid rgba(39,4,4,0.06); border-radius: 20px;
+      text-align: center;
     }
-    .pay-amount-label { font-size: 0.72rem; font-weight: 600; color: rgba(39,4,4,0.45); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .pay-amount-value { font-size: 2rem; font-weight: 900; color: var(--dark); letter-spacing: -0.5px; }
-    .pay-amount-to { font-size: 0.75rem; color: rgba(39,4,4,0.5); margin-top: 4px; }
-    .pay-amount-to strong { color: var(--dark); }
-    .pay-ref { font-size: 0.7rem; color: rgba(39,4,4,0.4); margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(39,4,4,0.1); }
+    .pay-amount-label { font-size: 0.65rem; font-weight: 700; color: rgba(39,4,4,0.35); letter-spacing: 2px; margin-bottom: 2px; }
+    .pay-amount-value { font-size: 2.4rem; font-weight: 900; color: var(--dark); letter-spacing: -1px; line-height: 1.1; }
+    .pay-amount-detail { font-size: 0.78rem; color: rgba(39,4,4,0.5); margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+    .pay-amount-detail strong { color: var(--dark); }
+    .pay-amount-dot { opacity: 0.4; }
+    .pay-ref { font-size: 0.7rem; color: rgba(39,4,4,0.4); margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(39,4,4,0.1); }
     .pay-ref strong { color: var(--red); }
-    .pay-step { margin-bottom: 1rem; }
-    .pay-input-group { margin-bottom: 0.6rem; }
-    .pay-input-group label {
-      display: block; font-size: 0.72rem; font-weight: 700;
-      color: rgba(39,4,4,0.55); text-transform: uppercase;
-      letter-spacing: 0.5px; margin-bottom: 6px;
+    .pay-body { padding: 0.5rem 1.5rem 1rem; }
+
+    /* Steps */
+    .pay-step { margin-bottom: 0.8rem; }
+    .pay-step-title {
+      font-size: 0.82rem; font-weight: 700; color: var(--dark);
+      display: flex; align-items: center; gap: 10px; margin-bottom: 0.7rem;
     }
-    .pay-input {
-      width: 100%; padding: 14px 16px;
-      border: 2px solid rgba(39,4,4,0.12); border-radius: 14px;
-      font-family: 'Montserrat', sans-serif; font-size: 1rem;
-      font-weight: 600; color: var(--dark); outline: none;
-      transition: border-color 0.3s; background: #fff;
+    .pay-step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--dark); color: var(--amber);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 900; flex-shrink: 0;
     }
-    .pay-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(255,176,0,0.1); }
-    .pay-pin-box { display: flex; justify-content: center; }
-    .pay-pin-input { text-align: center; font-size: 1.6rem; font-weight: 900; letter-spacing: 12px; max-width: 200px; }
+    .pay-input-wrap {
+      display: flex; align-items: center; border: 2px solid rgba(39,4,4,0.12);
+      border-radius: 14px; overflow: hidden; transition: border-color 0.3s;
+    }
+    .pay-input-wrap:focus-within { border-color: var(--amber); box-shadow: 0 0 0 4px rgba(255,176,0,0.1); }
+    .pay-input-prefix {
+      padding: 14px 12px; font-size: 0.9rem; font-weight: 700;
+      color: rgba(39,4,4,0.4); background: rgba(39,4,4,0.03);
+      border-right: 1px solid rgba(39,4,4,0.08); flex-shrink: 0;
+    }
+    .pay-num-input {
+      flex: 1; border: none; border-radius: 0; padding: 14px 14px;
+      font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600;
+      color: var(--dark); outline: none; background: #fff;
+    }
+    .pay-step-hint { font-size: 0.7rem; color: rgba(39,4,4,0.4); margin-top: 8px; padding-left: 2px; }
+    .pay-step-hint span { font-weight: 700; color: rgba(39,4,4,0.55); }
+
+    /* Push notification box */
+    .pay-push-box {
+      background: linear-gradient(135deg, rgba(37,211,102,0.06), rgba(37,211,102,0.02));
+      border: 1.5px solid rgba(37,211,102,0.2); border-radius: 18px;
+      padding: 1rem; text-align: center; margin-bottom: 0.8rem; position: relative;
+    }
+    .pay-push-icon {
+      font-size: 2rem; color: #25D366; margin-bottom: 0.5rem;
+      animation: pushBounce 1.5s ease-in-out infinite;
+    }
+    @keyframes pushBounce {
+      0%,100%{transform:translateY(0)}
+      30%{transform:translateY(-6px)}
+      50%{transform:translateY(0)}
+      70%{transform:translateY(-3px)}
+    }
+    .pay-push-title { font-size: 0.85rem; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+    .pay-push-msg { font-size: 0.75rem; color: rgba(39,4,4,0.55); line-height: 1.7; }
+    .pay-push-msg strong { color: var(--dark); }
+    .pay-push-bounce-arrow {
+      color: var(--amber); font-size: 1.2rem; margin-top: 6px;
+      animation: arrowBounce 1.2s ease-in-out infinite;
+    }
+    @keyframes arrowBounce {
+      0%,100%{transform:translateY(0);opacity:0.6}
+      50%{transform:translateY(6px);opacity:1}
+    }
+
+    /* PIN grid — 4 cells like Jumia/KiKUU */
+    .pay-pin-grid {
+      display: flex; justify-content: center; gap: 12px; margin-bottom: 0.5rem;
+    }
+    .pay-pin-cell {
+      width: 50px; height: 56px; border: 2px solid rgba(39,4,4,0.15);
+      border-radius: 14px; text-align: center;
+      font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 900;
+      color: var(--dark); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-text-security: disc;
+    }
+    .pay-pin-cell:focus {
+      border-color: var(--amber); box-shadow: 0 0 0 3px rgba(255,176,0,0.12);
+    }
+    .pay-pin-cell.filled { border-color: var(--amber); background: rgba(255,176,0,0.06); }
     .pay-pin-hint { text-align: center; font-size: 0.68rem; color: rgba(39,4,4,0.35); margin-top: 6px; }
-    .pay-status { text-align: center; font-size: 0.78rem; font-weight: 600; margin: 0.5rem 0; min-height: 20px; }
-    .pay-status.error { color: var(--red); }
-    .pay-status.success { color: #25D366; }
+
+    /* Status */
+    .pay-status { text-align: center; font-size: 0.8rem; font-weight: 600; margin: 0.5rem 0; min-height: 20px; color: var(--red); }
+    .pay-status.ok { color: #25D366; }
+
+    /* Buttons */
+    .pay-btn-row { display: flex; flex-direction: column; gap: 8px; margin-top: 0.3rem; }
     .pay-action-btn {
       width: 100%; padding: 15px; border: none; border-radius: 16px;
       font-family: 'Montserrat', sans-serif; font-size: 0.95rem;
       font-weight: 800; cursor: pointer; letter-spacing: 0.5px;
-      text-transform: uppercase; transition: all 0.3s;
+      transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;
       background: linear-gradient(135deg, var(--amber), #e09900);
       color: var(--dark); box-shadow: 0 6px 20px rgba(255,176,0,0.3);
     }
     .pay-action-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,176,0,0.4); }
-    .pay-footer-text {
-      text-align: center; font-size: 0.68rem; color: rgba(39,4,4,0.35);
-      margin-top: 10px;
+    .pay-action-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    .pay-cancel-btn {
+      width: 100%; padding: 12px; border: 1.5px solid rgba(39,4,4,0.12);
+      border-radius: 14px; background: #fff;
+      font-family: 'Montserrat', sans-serif; font-weight: 600;
+      font-size: 0.82rem; cursor: pointer; color: rgba(39,4,4,0.5); transition: all 0.2s;
     }
-    .pay-footer-text i { color: var(--amber); margin-right: 3px; }
-    .pay-processing { text-align: center; padding: 1.5rem 0; }
+    .pay-cancel-btn:hover { background: rgba(39,4,4,0.04); color: var(--dark); }
+    .pay-footer-text {
+      text-align: center; font-size: 0.65rem; color: rgba(39,4,4,0.3);
+      margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(39,4,4,0.06);
+    }
+    .pay-footer-text i { margin-right: 3px; }
+
+    /* Processing */
+    .pay-processing { text-align: center; padding: 2rem 0 1.5rem; }
+    .pay-spinner-wrap { position: relative; margin: 0 auto 1.5rem; }
     .pay-spinner {
-      width: 48px; height: 48px; border: 4px solid rgba(39,4,4,0.08);
+      width: 64px; height: 64px; border: 5px solid rgba(39,4,4,0.06);
       border-top-color: var(--amber); border-radius: 50%;
-      margin: 0 auto 1rem;
-      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+      animation: spin 0.7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .pay-processing-text { font-size: 0.95rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
-    .pay-processing-sub { font-size: 0.75rem; color: rgba(39,4,4,0.45); }
-    .pay-result { text-align: center; padding: 0.5rem 0; }
-    .pay-result-icon { font-size: 3rem; margin-bottom: 0.8rem; }
-    .pay-result.success .pay-result-icon { color: #25D366; animation: popIn 0.4s ease; }
-    @keyframes popIn { 0%{transform:scale(0);opacity:0} 70%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
-    .pay-result-title { font-size: 1.1rem; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
-    .pay-result-msg { font-size: 0.8rem; color: rgba(39,4,4,0.55); line-height: 1.6; }
+    .pay-bank-icons {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin-top: 12px; font-size: 0.75rem; font-weight: 700; color: rgba(39,4,4,0.4);
+    }
+    .pay-bank-icons span:first-child { background: rgba(39,4,4,0.06); padding: 4px 10px; border-radius: 6px; }
+    .pay-bank-icons span:last-child { background: var(--red); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; }
+    .pay-processing-text { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    .pay-processing-sub { font-size: 0.78rem; color: rgba(39,4,4,0.45); }
+
+    /* Result */
+    .pay-result { text-align: center; padding: 1rem 0; }
+    .pay-result-icon { font-size: 3.5rem; margin-bottom: 0.8rem; }
+    .pay-result.success .pay-result-icon { color: #25D366; animation: popIn 0.5s ease; }
+    .pay-result.fail .pay-result-icon { color: var(--red); }
+    @keyframes popIn { 0%{transform:scale(0) rotate(-10deg);opacity:0} 60%{transform:scale(1.2) rotate(2deg)} 100%{transform:scale(1) rotate(0);opacity:1} }
+    .pay-result-title { font-size: 1.15rem; font-weight: 900; color: var(--dark); margin-bottom: 6px; }
+    .pay-result-msg { font-size: 0.82rem; color: rgba(39,4,4,0.55); line-height: 1.7; }
 
     /* ===== UNAVAILABLE CARD ===== */
     .food-card.unavailable {
@@ -1081,6 +1331,34 @@
   </style>
 </head>
 <body>
+
+<!-- ===== PRELOADER ===== -->
+<div class="preloader" id="preloader">
+  <div class="preloader-content">
+    <div class="preloader-logo-wrap">
+      <div class="preloader-pulse"></div>
+      <img src="https://i.ibb.co/ds68rJqr/chop.png" alt="Chop" class="preloader-logo" />
+    </div>
+    <div class="preloader-brand">Chop<span>.</span></div>
+    <div class="preloader-tagline">Taste the Vibe</div>
+    <div class="preloader-dots">
+      <span class="preloader-dot"></span>
+      <span class="preloader-dot"></span>
+      <span class="preloader-dot"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GLOBAL LOADING OVERLAY ===== -->
+<div class="global-loading-overlay" id="globalLoadingOverlay">
+  <div class="global-loading-box">
+    <div class="global-loading-spinner-wrap">
+      <img src="https://i.ibb.co/ds68rJqr/chop.png" alt="Chop" class="global-loading-logo" />
+      <div class="global-loading-spinner"></div>
+    </div>
+    <div class="global-loading-text" id="globalLoadingText">Processing...</div>
+  </div>
+</div>
 
 <!-- DRAWER OVERLAY -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
@@ -1437,72 +1715,93 @@
   </div>
 </div>
 
-<!-- ===== PAYMENT MODAL (MTN / Telecel) ===== -->
+<!-- ===== PAYMENT MODAL (MTN MoMo / Telecel — Jumia Style) ===== -->
 <div class="modal-overlay" id="paymentModal">
   <div class="pay-modal-box">
-    <div class="pay-modal-header" id="payBrandBg">
-      <span class="pay-brand-icon" id="payBrandIcon" style="color:#000">M</span>
-      <div>
-        <div class="pay-brand-name" id="payBrandName">MTN Mobile Money</div>
-        <div class="pay-brand-sub">Secure Payment</div>
-      </div>
-      <button class="pay-close-btn" onclick="closePaymentModal()"><i class="fas fa-times"></i></button>
+    <!-- Top brand bar -->
+    <div class="pay-top-bar" id="payBrandBg"></div>
+    <button class="pay-close-btn" onclick="closePaymentModal()"><i class="fas fa-times"></i></button>
+
+    <!-- Header -->
+    <div class="pay-header">
+      <span class="pay-brand-icon" id="payBrandIcon">M</span>
+      <span class="pay-brand-name" id="payBrandName">MTN Mobile Money</span>
+      <span class="pay-brand-badge">SECURE</span>
     </div>
-    <div class="pay-body">
-      <!-- Amount Display -->
-      <div class="pay-amount-card">
-        <div class="pay-amount-label">You are paying</div>
-        <div class="pay-amount-value" id="payAmount">GH₵0.00</div>
-        <div class="pay-amount-to">
-          To: <strong id="payRecipientName">Chop Ghana</strong> · <span id="payRecipient">055 461 1569</span>
-        </div>
-        <div class="pay-ref">
-          Reference: <strong id="payReference">#CHOP-0000</strong>
-        </div>
-      </div>
 
-      <!-- Step 1: Phone -->
-      <div class="pay-step" id="payStep1">
-        <div class="pay-input-group">
-          <label>Phone Number (MoMo / Telecel)</label>
-          <input type="tel" id="payPhone" class="pay-input" placeholder="e.g. 055 123 4567" inputmode="numeric" />
-        </div>
+    <!-- Amount -->
+    <div class="pay-amount-card">
+      <div class="pay-amount-label">YOU ARE PAYING</div>
+      <div class="pay-amount-value" id="payAmount">GH₵0.00</div>
+      <div class="pay-amount-detail">
+        <span>To <strong id="payRecipientName">Chop Ghana</strong></span>
+        <span class="pay-amount-dot">·</span>
+        <span id="payRecipient">055 461 1569</span>
       </div>
+      <div class="pay-ref">Ref: <strong id="payReference">#CHOP-0000</strong></div>
+    </div>
 
-      <!-- Step 2: PIN -->
-      <div class="pay-step" id="payStep2" style="display:none">
-        <div class="pay-input-group">
-          <label>Enter MoMo PIN to Confirm</label>
-          <div class="pay-pin-box">
-            <input type="password" id="payPin" class="pay-input pay-pin-input" placeholder="****" maxlength="4" inputmode="numeric" />
-          </div>
-          <div class="pay-pin-hint">Enter your 4-digit Mobile Money PIN</div>
-        </div>
+    <!-- === STEP 1: Phone Number === -->
+    <div class="pay-step" id="payStep1">
+      <div class="pay-step-title"><span class="pay-step-num">1</span> Enter your Mobile Money number</div>
+      <div class="pay-input-wrap">
+        <span class="pay-input-prefix">+233</span>
+        <input type="tel" id="payPhone" class="pay-input pay-num-input" placeholder="55 123 4567" inputmode="numeric" maxlength="15" />
       </div>
+      <div class="pay-step-hint">Enter the phone number linked to your <span id="payProviderHint">MTN MoMo</span> account</div>
+    </div>
 
-      <!-- Processing -->
-      <div class="pay-step pay-processing" id="payProcessing" style="display:none">
+    <!-- === STEP 2: Push Notification + PIN === -->
+    <div class="pay-step" id="payStep2" style="display:none">
+      <div class="pay-push-box" id="payPushBox">
+        <div class="pay-push-icon"><i class="fas fa-mobile-alt"></i></div>
+        <div class="pay-push-title">Payment Request Sent!</div>
+        <div class="pay-push-msg">A payment prompt has been sent to your phone.<br>Check your phone and <strong>enter your MoMo PIN</strong> below to authorize.</div>
+        <div class="pay-push-bounce-arrow"><i class="fas fa-arrow-down"></i></div>
+      </div>
+      <div class="pay-step-title" style="margin-top:0.6rem"><span class="pay-step-num">2</span> Enter MoMo PIN to authorize</div>
+      <div class="pay-pin-grid">
+        <input type="password" id="payPin0" class="pay-pin-cell" maxlength="1" inputmode="numeric" />
+        <input type="password" id="payPin1" class="pay-pin-cell" maxlength="1" inputmode="numeric" />
+        <input type="password" id="payPin2" class="pay-pin-cell" maxlength="1" inputmode="numeric" />
+        <input type="password" id="payPin3" class="pay-pin-cell" maxlength="1" inputmode="numeric" />
+      </div>
+      <div class="pay-pin-hint">Enter your 4-digit Mobile Money PIN to approve payment</div>
+    </div>
+
+    <!-- === PROCESSING === -->
+    <div class="pay-step pay-processing" id="payProcessing" style="display:none">
+      <div class="pay-spinner-wrap">
         <div class="pay-spinner"></div>
-        <div class="pay-processing-text">Processing payment...</div>
-        <div class="pay-processing-sub">Please wait, do not close this page</div>
+        <div class="pay-bank-icons">
+          <span id="payProcBrand">MTN</span>
+          <i class="fas fa-exchange-alt"></i>
+          <span>CHOP</span>
+        </div>
       </div>
+      <div class="pay-processing-text">Authorizing payment...</div>
+      <div class="pay-processing-sub">Please wait — do not close this page</div>
+    </div>
 
-      <!-- Result -->
-      <div class="pay-step pay-result" id="payResult" style="display:none">
-        <div class="pay-result-icon" id="payResultIcon"></div>
-        <div class="pay-result-title" id="payResultTitle"></div>
-        <div class="pay-result-msg" id="payResultMsg"></div>
-      </div>
+    <!-- === RESULT === -->
+    <div class="pay-step pay-result" id="payResult" style="display:none">
+      <div class="pay-result-icon" id="payResultIcon"></div>
+      <div class="pay-result-title" id="payResultTitle"></div>
+      <div class="pay-result-msg" id="payResultMsg"></div>
+    </div>
 
-      <div class="pay-status" id="payStatusMsg"></div>
+    <div class="pay-status" id="payStatusMsg"></div>
 
+    <!-- Buttons -->
+    <div class="pay-btn-row">
       <button class="pay-action-btn" id="payBtn" onclick="payBtnAction()">
-        <i class="fas fa-paper-plane" style="margin-right:6px"></i>Send Money
+        <span id="payBtnText">Continue</span> <i class="fas fa-arrow-right"></i>
       </button>
+      <button class="pay-cancel-btn" id="payCancelBtn" onclick="closePaymentModal()" style="display:none">Cancel & Go Back</button>
+    </div>
 
-      <div class="pay-footer-text">
-        <i class="fas fa-shield-alt"></i> Secured by <span id="payBrandShort">MTN MoMo</span> · Pay to Chop Ghana — <span id="payFooterNum">055 461 1569</span>
-      </div>
+    <div class="pay-footer-text">
+      <i class="fas fa-lock"></i> Secured by <span id="payBrandShort">MTN MoMo</span> &nbsp;|&nbsp; Pay to Chop Ghana — <span id="payFooterNum">055 461 1569</span>
     </div>
   </div>
 </div>
@@ -2134,6 +2433,10 @@ const SHOP_SMS2 = '0509511619';                 // Business: 050 951 1619
 // ============================================================
 //  PAYMENT MODAL — MTN Momo / Telecel Cash simulation
 // ============================================================
+// ============================================================
+//  PAYMENT MODAL — Jumia / KiKUU Style MoMo Flow
+//  Step 1: Phone number → Step 2: Push + PIN → Processing → Result
+// ============================================================
 function openPaymentModal() {
   const payMethod = localStorage.getItem('custPayMethod') || 'MTN';
   const delivery = getCartTotal() >= 100 ? 0 : 5;
@@ -2148,34 +2451,40 @@ function openPaymentModal() {
   const brandShort = isMTN ? 'MTN MoMo' : 'Telecel Cash';
   const brandIcon = isMTN ? 'M' : 'TC';
   const brandIconColor = isMTN ? '#000' : '#fff';
+  const payToNum = isMTN ? '055 461 1569' : '050 951 1619';
 
-  document.getElementById('payBrandColor').textContent = brandColor;
+  document.getElementById('payBrandBg').style.background = brandColor;
   document.getElementById('payBrandName').textContent = brandName;
   document.getElementById('payBrandShort').textContent = brandShort;
   document.getElementById('payBrandIcon').textContent = brandIcon;
   document.getElementById('payBrandIcon').style.color = brandIconColor;
-  document.getElementById('payBrandBg').style.background = brandColor;
   document.getElementById('payAmount').textContent = `GH₵${total.toFixed(2)}`;
   document.getElementById('payReference').textContent = orderId;
-  const payToNum = isMTN ? '055 461 1569' : '050 951 1619';
   document.getElementById('payRecipient').textContent = payToNum;
   document.getElementById('payRecipientName').textContent = 'Chop Ghana';
   document.getElementById('payFooterNum').textContent = payToNum;
+  document.getElementById('payProviderHint').textContent = brandShort;
+  document.getElementById('payProcBrand').textContent = isMTN ? 'MTN' : 'TCL';
 
-  // Reset fields
+  // Reset
   document.getElementById('payPhone').value = localStorage.getItem('custPhone') || '';
-  document.getElementById('payPin').value = '';
+  ['payPin0','payPin1','payPin2','payPin3'].forEach(id => { document.getElementById(id).value = ''; document.getElementById(id).className = 'pay-pin-cell'; });
   document.getElementById('payStatusMsg').textContent = '';
   document.getElementById('payStatusMsg').className = 'pay-status';
   document.getElementById('payStep1').style.display = 'block';
   document.getElementById('payStep2').style.display = 'none';
   document.getElementById('payProcessing').style.display = 'none';
   document.getElementById('payResult').style.display = 'none';
-  document.getElementById('payBtn').style.display = 'inline-block';
-  document.getElementById('payBtn').textContent = 'Send Money';
+  document.getElementById('payBtn').style.display = 'flex';
+  document.getElementById('payBtn').disabled = false;
+  document.getElementById('payBtnText').textContent = 'Continue';
+  document.getElementById('payCancelBtn').style.display = 'none';
 
   document.getElementById('paymentModal').classList.add('show');
   document.body.style.overflow = 'hidden';
+
+  // Auto-focus phone input after modal animation
+  setTimeout(() => { const ph = document.getElementById('payPhone'); if (ph) ph.focus(); }, 400);
 }
 
 function closePaymentModal() {
@@ -2183,50 +2492,78 @@ function closePaymentModal() {
   document.body.style.overflow = '';
 }
 
+// Step 1 → Step 2: Validate phone, show push notification + PIN
 function payStepToPin() {
-  const phone = document.getElementById('payPhone').value.trim();
-  if (!phone || phone.length < 10) {
-    document.getElementById('payStatusMsg').textContent = 'Enter a valid phone number';
-    document.getElementById('payStatusMsg').className = 'pay-status error';
+  const phone = document.getElementById('payPhone').value.replace(/\s+/g, '');
+  if (!phone || phone.length < 9) {
+    document.getElementById('payStatusMsg').textContent = 'Please enter a valid mobile money number';
+    document.getElementById('payStatusMsg').className = 'pay-status';
     return;
   }
   document.getElementById('payStatusMsg').textContent = '';
   document.getElementById('payStatusMsg').className = 'pay-status';
   document.getElementById('payStep1').style.display = 'none';
   document.getElementById('payStep2').style.display = 'block';
-  document.getElementById('payBtn').textContent = 'Confirm Payment';
+  document.getElementById('payPushBox').style.display = 'block';
+  document.getElementById('payBtnText').textContent = 'Approve Payment';
+  document.getElementById('payCancelBtn').style.display = 'block';
+
+  // Auto-focus first PIN cell
+  setTimeout(() => { const p0 = document.getElementById('payPin0'); if (p0) p0.focus(); }, 300);
+}
+
+// Read 4 PIN cells & process
+function getPinFromCells() {
+  let pin = '';
+  for (let i = 0; i < 4; i++) {
+    const cell = document.getElementById('payPin' + i);
+    pin += (cell ? cell.value : '');
+  }
+  return pin;
 }
 
 function processPayment() {
-  const pin = document.getElementById('payPin').value.trim();
+  const pin = getPinFromCells();
   if (!pin || pin.length < 4) {
-    document.getElementById('payStatusMsg').textContent = 'Enter your 4-digit PIN';
-    document.getElementById('payStatusMsg').className = 'pay-status error';
+    document.getElementById('payStatusMsg').textContent = 'Please enter your full 4-digit MoMo PIN';
+    document.getElementById('payStatusMsg').className = 'pay-status';
+    // Shake PIN cells
+    document.querySelectorAll('.pay-pin-cell').forEach(c => { c.style.borderColor = 'var(--red)'; setTimeout(() => { c.style.borderColor = ''; }, 600); });
     return;
   }
-  // Show processing
+
+  // Hide push box, show processing
+  document.getElementById('payPushBox').style.display = 'none';
   document.getElementById('payStep2').style.display = 'none';
   document.getElementById('payProcessing').style.display = 'block';
   document.getElementById('payBtn').style.display = 'none';
+  document.getElementById('payCancelBtn').style.display = 'none';
   document.getElementById('payStatusMsg').textContent = '';
+  // Global loading overlay for extra feedback
+  showGlobalLoading('Authorizing payment...');
 
-  // Simulate processing
+  // Simulate network processing (2.5s — realistic for MoMo)
   setTimeout(() => {
+    hideGlobalLoading();
     document.getElementById('payProcessing').style.display = 'none';
     document.getElementById('payResult').style.display = 'block';
     document.getElementById('payResult').className = 'pay-result success';
     document.getElementById('payResultIcon').innerHTML = '<i class="fas fa-check-circle"></i>';
     document.getElementById('payResultTitle').textContent = 'Payment Successful!';
-    document.getElementById('payResultMsg').textContent = 'Your order has been placed. Confirmation will be sent to you via SMS shortly.';
-    document.getElementById('payBtn').style.display = 'inline-block';
-    document.getElementById('payBtn').textContent = 'View Receipt →';
+    document.getElementById('payResultMsg').textContent = 'GH₵' + parseFloat(localStorage.getItem('pendingTotal')||0).toFixed(2) + ' has been sent. Your order is confirmed. You will receive an SMS confirmation shortly.';
+    document.getElementById('payBtn').style.display = 'flex';
+    document.getElementById('payBtn').disabled = false;
+    document.getElementById('payBtnText').textContent = 'View Receipt';
+    document.getElementById('payCancelBtn').style.display = 'none';
 
-    // Now submit the actual order
     submitOrderAfterPayment();
-  }, 2200);
+  }, 2500);
 }
 
 function submitOrderAfterPayment() {
+  // Brief global loading while order is submitted
+  showGlobalLoading('Placing your order...');
+
   const name = localStorage.getItem('custName') || '';
   const phone = localStorage.getItem('custPhone') || '';
   const email = localStorage.getItem('custEmail') || '';
@@ -2237,20 +2574,18 @@ function submitOrderAfterPayment() {
   const orderId = localStorage.getItem('pendingOrderId') || ('CHOP-' + Date.now().toString().slice(-6));
   const total = parseFloat(localStorage.getItem('pendingTotal')) || getCartTotal() + (getCartTotal() >= 100 ? 0 : 5);
 
-  // 1. Send order via Formspree (email to business owner)
   sendOrderToServer(orderId, name, phone, email, address, city, notes, payMethod, total);
-
-  // 2. Simulate SMS notification to business numbers
   sendSMSNotification(orderId, total, name, phone);
-
-  // Store for receipt
   localStorage.setItem('lastOrderId', orderId);
   localStorage.setItem('lastOrderTotal', total);
+
+  setTimeout(() => hideGlobalLoading(), 1200);
 }
 
 async function sendOrderToServer(orderId, name, phone, email, address, city, notes, payMethod, total) {
   const delivery = getCartTotal() >= 100 ? 0 : 5;
   const itemsList = cart.map(i => `• ${i.name} ×${i.qty} — GH₵${(i.price * i.qty).toFixed(2)}`).join('\\n');
+  showGlobalLoading('Sending order...');
   try {
     const resp = await fetch(FORMSPREE_URL, {
       method: 'POST',
@@ -2270,11 +2605,11 @@ async function sendOrderToServer(orderId, name, phone, email, address, city, not
       })
     });
     if (resp.ok) console.log('✅ Order sent to server');
-  } catch (e) { console.log('📧 Order queued'); }
+    hideGlobalLoading();
+  } catch (e) { console.log('📧 Order queued'); hideGlobalLoading(); }
 }
 
 function sendSMSNotification(orderId, total, name, phone) {
-  // Simulate SMS sending to business numbers
   console.log(`📱 SMS sent to ${SHOP_SMS_NUMBER} & ${SHOP_SMS2}`);
   console.log(`📋 Order #${orderId} | ${name} | GH₵${total.toFixed(2)} | ${phone}`);
 }
@@ -2305,6 +2640,49 @@ function payBtnAction() {
     processPayment();
   }
 }
+
+// === PIN CELL AUTO-ADVANCE (like Jumia / KiKUU) ===
+document.addEventListener('input', function(e) {
+  if (!e.target.classList.contains('pay-pin-cell')) return;
+  const val = e.target.value;
+  // Only allow digits
+  if (!/^\d$/.test(val)) { e.target.value = ''; return; }
+  e.target.classList.add('filled');
+  // Move to next cell
+  const idx = parseInt(e.target.id.replace('payPin', ''));
+  if (idx < 3) {
+    const next = document.getElementById('payPin' + (idx + 1));
+    if (next) next.focus();
+  }
+});
+document.addEventListener('keydown', function(e) {
+  if (!e.target.classList.contains('pay-pin-cell')) return;
+  if (e.key === 'Backspace' && e.target.value === '') {
+    e.target.classList.remove('filled');
+    const idx = parseInt(e.target.id.replace('payPin', ''));
+    if (idx > 0) {
+      const prev = document.getElementById('payPin' + (idx - 1));
+      if (prev) { prev.value = ''; prev.classList.remove('filled'); prev.focus(); }
+    }
+  }
+});
+document.addEventListener('paste', function(e) {
+  const activeEl = document.activeElement;
+  if (!activeEl || !activeEl.classList.contains('pay-pin-cell')) return;
+  e.preventDefault();
+  const paste = (e.clipboardData || window.clipboardData).getData('text');
+  const digits = paste.replace(/\D/g, '').slice(0, 4);
+  for (let i = 0; i < 4; i++) {
+    const cell = document.getElementById('payPin' + i);
+    if (cell) {
+      cell.value = digits[i] || '';
+      cell.classList.toggle('filled', !!digits[i]);
+    }
+  }
+  const lastFilled = Math.min(digits.length, 3);
+  const focusCell = document.getElementById('payPin' + lastFilled);
+  if (focusCell) focusCell.focus();
+});
 
 // ============================================================
 //  RECEIPT MODAL
@@ -2450,8 +2828,9 @@ function submitFeedback(e) {
   const name = document.getElementById('feedbackName').value;
   const phone = document.getElementById('feedbackPhone').value;
   const msg = document.getElementById('feedbackMsg').value;
+  showGlobalLoading('Sending feedback...');
   const waMsg = `💬 *Feedback for CHOP*\n\n👤 Name: ${name}\n📞 Phone: ${phone}\n\n📝 Message:\n${msg}\n\n_Sent via Chop Website_`;
-  window.open(`https://wa.me/233554611569?text=${encodeURIComponent(waMsg)}`, '_blank');
+  setTimeout(() => { window.open(`https://wa.me/233554611569?text=${encodeURIComponent(waMsg)}`, '_blank'); hideGlobalLoading(); }, 600);
   showToast('Thanks for your feedback, ' + name + '! 🙏');
   document.getElementById('feedbackForm').reset();
 }
@@ -2465,7 +2844,35 @@ document.addEventListener('DOMContentLoaded', () => {
   buildCategoryTabs();
   buildMenuGrid();
   initScrollAnimations();
+
+  // Hide preloader after page loads
+  setTimeout(() => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) preloader.classList.add('hidden');
+  }, 1800);
 });
+
+// Fallback: hide preloader after 4s max (prevents stuck loader)
+setTimeout(() => {
+  const preloader = document.getElementById('preloader');
+  if (preloader && !preloader.classList.contains('hidden')) {
+    preloader.classList.add('hidden');
+  }
+}, 4000);
+
+// ============================================================
+//  GLOBAL LOADING HELPER
+// ============================================================
+function showGlobalLoading(msg) {
+  const overlay = document.getElementById('globalLoadingOverlay');
+  const text = document.getElementById('globalLoadingText');
+  if (text && msg) text.textContent = msg;
+  if (overlay) overlay.classList.add('show');
+}
+function hideGlobalLoading() {
+  const overlay = document.getElementById('globalLoadingOverlay');
+  if (overlay) overlay.classList.remove('show');
+}
 </script>
 </body>
 </html>
