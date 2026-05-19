@@ -11,6 +11,7 @@
   <title>Chop – Taste the Vibe</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://js.paystack.co/v1/inline.js"></script>
   <style>
     :root {
       --red: #FF0000;
@@ -1195,33 +1196,16 @@
     .pay-step-hint { font-size: 0.7rem; color: rgba(39,4,4,0.4); margin-top: 8px; padding-left: 2px; }
     .pay-step-hint span { font-weight: 700; color: rgba(39,4,4,0.55); }
 
-    /* Push notification box */
-    .pay-push-box {
-      background: linear-gradient(135deg, rgba(37,211,102,0.06), rgba(37,211,102,0.02));
-      border: 1.5px solid rgba(37,211,102,0.2); border-radius: 18px;
-      padding: 1rem; text-align: center; margin-bottom: 0.8rem; position: relative;
+    /* MoMo notice */
+    .pay-momo-notice {
+      background: linear-gradient(135deg, rgba(255,176,0,0.06), rgba(255,176,0,0.02));
+      border: 1.5px solid rgba(255,176,0,0.2); border-radius: 16px;
+      padding: 1rem; text-align: center; margin-bottom: 0.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
     }
-    .pay-push-icon {
-      font-size: 2rem; color: #25D366; margin-bottom: 0.5rem;
-      animation: pushBounce 1.5s ease-in-out infinite;
-    }
-    @keyframes pushBounce {
-      0%,100%{transform:translateY(0)}
-      30%{transform:translateY(-6px)}
-      50%{transform:translateY(0)}
-      70%{transform:translateY(-3px)}
-    }
-    .pay-push-title { font-size: 0.85rem; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
-    .pay-push-msg { font-size: 0.75rem; color: rgba(39,4,4,0.55); line-height: 1.7; }
-    .pay-push-msg strong { color: var(--dark); }
-    .pay-push-bounce-arrow {
-      color: var(--amber); font-size: 1.2rem; margin-top: 6px;
-      animation: arrowBounce 1.2s ease-in-out infinite;
-    }
-    @keyframes arrowBounce {
-      0%,100%{transform:translateY(0);opacity:0.6}
-      50%{transform:translateY(6px);opacity:1}
-    }
+    .pay-momo-icon { font-size: 1.6rem; color: var(--amber); }
+    .pay-momo-text { font-size: 0.78rem; color: rgba(39,4,4,0.6); line-height: 1.7; }
+    .pay-momo-text strong { color: var(--dark); }
 
     /* PIN grid — 4 cells like Jumia/KiKUU */
     .pay-pin-grid {
@@ -1256,13 +1240,6 @@
     }
     .pay-action-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,176,0,0.4); }
     .pay-action-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-    .pay-cancel-btn {
-      width: 100%; padding: 12px; border: 1.5px solid rgba(39,4,4,0.12);
-      border-radius: 14px; background: #fff;
-      font-family: 'Montserrat', sans-serif; font-weight: 600;
-      font-size: 0.82rem; cursor: pointer; color: rgba(39,4,4,0.5); transition: all 0.2s;
-    }
-    .pay-cancel-btn:hover { background: rgba(39,4,4,0.04); color: var(--dark); }
     .pay-footer-text {
       text-align: center; font-size: 0.65rem; color: rgba(39,4,4,0.3);
       margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(39,4,4,0.06);
@@ -1751,22 +1728,20 @@
       <div class="pay-step-hint">Enter the phone number linked to your <span id="payProviderHint">MTN MoMo</span> account</div>
     </div>
 
-    <!-- === STEP 2: Push Notification + PIN === -->
+    <!-- === STEP 2: MoMo PIN (like dialing *170#) === -->
     <div class="pay-step" id="payStep2" style="display:none">
-      <div class="pay-push-box" id="payPushBox">
-        <div class="pay-push-icon"><i class="fas fa-mobile-alt"></i></div>
-        <div class="pay-push-title">Payment Request Sent!</div>
-        <div class="pay-push-msg">A payment prompt has been sent to your phone.<br>Check your phone and <strong>enter your MoMo PIN</strong> below to authorize.</div>
-        <div class="pay-push-bounce-arrow"><i class="fas fa-arrow-down"></i></div>
+      <div class="pay-momo-notice">
+        <div class="pay-momo-icon"><i class="fas fa-mobile-alt"></i></div>
+        <div class="pay-momo-text">Dial <strong>*170#</strong> or open your MoMo app to confirm. Enter your 4-digit MoMo PIN below to send money from your wallet.</div>
       </div>
-      <div class="pay-step-title" style="margin-top:0.6rem"><span class="pay-step-num">2</span> Enter MoMo PIN to authorize</div>
+      <div class="pay-step-title" style="margin-top:0.8rem"><span class="pay-step-num">2</span> Enter MoMo PIN to send money</div>
       <div class="pay-pin-grid">
         <input type="password" id="payPin0" class="pay-pin-cell" maxlength="1" inputmode="numeric" />
         <input type="password" id="payPin1" class="pay-pin-cell" maxlength="1" inputmode="numeric" />
         <input type="password" id="payPin2" class="pay-pin-cell" maxlength="1" inputmode="numeric" />
         <input type="password" id="payPin3" class="pay-pin-cell" maxlength="1" inputmode="numeric" />
       </div>
-      <div class="pay-pin-hint">Enter your 4-digit Mobile Money PIN to approve payment</div>
+      <div class="pay-pin-hint">This is the same PIN you use to send money on your phone</div>
     </div>
 
     <!-- === PROCESSING === -->
@@ -1797,7 +1772,7 @@
       <button class="pay-action-btn" id="payBtn" onclick="payBtnAction()">
         <span id="payBtnText">Continue</span> <i class="fas fa-arrow-right"></i>
       </button>
-      <button class="pay-cancel-btn" id="payCancelBtn" onclick="closePaymentModal()" style="display:none">Cancel & Go Back</button>
+
     </div>
 
     <div class="pay-footer-text">
@@ -2422,29 +2397,72 @@ function handleCartAction() {
 }
 
 // ============================================================
-//  CONFIG – Email via Formspree (ID: mqenrbey) | SMS via sms: link
-//  Formspree is free for 50 submissions/month – no signup needed
+//  CONFIG — Set your keys here
 // ============================================================
-const FORMSPREE_ID = 'mqenrbey';               // Your Formspree form ID
+// PAYSTACK: Sign up free at paystack.com → Settings → API Keys → copy Public Key
+// Uncomment and paste your key to accept real MTN Momo & Telecel payments:
+const PAYSTACK_PUBLIC_KEY = 'pk_test_4ee06a25c6fed7ee72d9f38a3e848981d2fb798b';
+
+// FORMSPREE: Order emails sent here (free, 50/month)
+const FORMSPREE_ID = 'mqenrbey';
 const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
-const SHOP_SMS_NUMBER = '0554611569';           // Business: 055 461 1569
-const SHOP_SMS2 = '0509511619';                 // Business: 050 951 1619
+
+// BUSINESS NUMBERS (for SMS fallback & confirmations)
+const SHOP_NUMBER_MTN = '0554611569';   // MTN Momo
+const SHOP_NUMBER_TELECEL = '0509511619'; // Telecel Cash
 
 // ============================================================
 //  PAYMENT MODAL — MTN Momo / Telecel Cash simulation
 // ============================================================
 // ============================================================
-//  PAYMENT MODAL — Jumia / KiKUU Style MoMo Flow
-//  Step 1: Phone number → Step 2: Push + PIN → Processing → Result
+//  PAYMENT — Real Paystack MoMo OR SMS fallback
 // ============================================================
 function openPaymentModal() {
   const payMethod = localStorage.getItem('custPayMethod') || 'MTN';
+  const name = localStorage.getItem('custName') || '';
+  const phone = localStorage.getItem('custPhone') || '';
+  const email = localStorage.getItem('custEmail') || phone + '@chopgh.com';
   const delivery = getCartTotal() >= 100 ? 0 : 5;
   const total = getCartTotal() + delivery;
   const orderId = 'CHOP-' + Date.now().toString().slice(-6);
   localStorage.setItem('pendingOrderId', orderId);
   localStorage.setItem('pendingTotal', total);
 
+  // === IF PAYSTACK KEY IS SET → USE REAL PAYSTACK ===
+  if (PAYSTACK_PUBLIC_KEY && PAYSTACK_PUBLIC_KEY.length > 10) {
+    closeCart();
+    const handler = PaystackPop.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email: email,
+      amount: Math.round(total * 100), // Paystack uses pesewas
+      currency: 'GHS',
+      ref: orderId,
+      channels: ['mobile_money'],
+      mobile_money: {
+        phone: phone.replace(/\s+/g, '').replace(/^0/, '233'),
+        provider: payMethod === 'MTN' ? 'mtn' : 'tgo'
+      },
+      metadata: {
+        custom_fields: [
+          { display_name: 'Customer Name', variable_name: 'customer_name', value: name },
+          { display_name: 'Phone', variable_name: 'phone', value: phone },
+          { display_name: 'Payment Method', variable_name: 'payment_method', value: payMethod }
+        ]
+      },
+      callback: function(response) {
+        // Payment successful!
+        submitOrderAfterPayment();
+        showReceipt(orderId, total, name, phone, email, localStorage.getItem('custAddress')||'', localStorage.getItem('custCity')||'Elmina', localStorage.getItem('custNotes')||'', payMethod);
+      },
+      onClose: function() {
+        showToast('Payment cancelled. Try again when ready.');
+      }
+    });
+    handler.openIframe();
+    return;
+  }
+
+  // === FALLBACK: SMS payment instructions ===
   const isMTN = payMethod === 'MTN';
   const brandColor = isMTN ? '#FFCC00' : '#E31235';
   const brandName = isMTN ? 'MTN Mobile Money' : 'Telecel Cash';
@@ -2466,8 +2484,8 @@ function openPaymentModal() {
   document.getElementById('payProviderHint').textContent = brandShort;
   document.getElementById('payProcBrand').textContent = isMTN ? 'MTN' : 'TCL';
 
-  // Reset
-  document.getElementById('payPhone').value = localStorage.getItem('custPhone') || '';
+  // Reset PIN fields
+  document.getElementById('payPhone').value = phone;
   ['payPin0','payPin1','payPin2','payPin3'].forEach(id => { document.getElementById(id).value = ''; document.getElementById(id).className = 'pay-pin-cell'; });
   document.getElementById('payStatusMsg').textContent = '';
   document.getElementById('payStatusMsg').className = 'pay-status';
@@ -2478,12 +2496,9 @@ function openPaymentModal() {
   document.getElementById('payBtn').style.display = 'flex';
   document.getElementById('payBtn').disabled = false;
   document.getElementById('payBtnText').textContent = 'Continue';
-  document.getElementById('payCancelBtn').style.display = 'none';
 
   document.getElementById('paymentModal').classList.add('show');
   document.body.style.overflow = 'hidden';
-
-  // Auto-focus phone input after modal animation
   setTimeout(() => { const ph = document.getElementById('payPhone'); if (ph) ph.focus(); }, 400);
 }
 
@@ -2492,7 +2507,7 @@ function closePaymentModal() {
   document.body.style.overflow = '';
 }
 
-// Step 1 → Step 2: Validate phone, show push notification + PIN
+// Step 1 → Step 2: Validate phone, show PIN input
 function payStepToPin() {
   const phone = document.getElementById('payPhone').value.replace(/\s+/g, '');
   if (!phone || phone.length < 9) {
@@ -2504,10 +2519,7 @@ function payStepToPin() {
   document.getElementById('payStatusMsg').className = 'pay-status';
   document.getElementById('payStep1').style.display = 'none';
   document.getElementById('payStep2').style.display = 'block';
-  document.getElementById('payPushBox').style.display = 'block';
-  document.getElementById('payBtnText').textContent = 'Approve Payment';
-  document.getElementById('payCancelBtn').style.display = 'block';
-
+  document.getElementById('payBtnText').textContent = 'Send Money';
   // Auto-focus first PIN cell
   setTimeout(() => { const p0 = document.getElementById('payPin0'); if (p0) p0.focus(); }, 300);
 }
@@ -2525,45 +2537,33 @@ function getPinFromCells() {
 function processPayment() {
   const pin = getPinFromCells();
   if (!pin || pin.length < 4) {
-    document.getElementById('payStatusMsg').textContent = 'Please enter your full 4-digit MoMo PIN';
+    document.getElementById('payStatusMsg').textContent = 'Enter your 4-digit MoMo PIN';
     document.getElementById('payStatusMsg').className = 'pay-status';
-    // Shake PIN cells
     document.querySelectorAll('.pay-pin-cell').forEach(c => { c.style.borderColor = 'var(--red)'; setTimeout(() => { c.style.borderColor = ''; }, 600); });
     return;
   }
-
-  // Hide push box, show processing
-  document.getElementById('payPushBox').style.display = 'none';
   document.getElementById('payStep2').style.display = 'none';
   document.getElementById('payProcessing').style.display = 'block';
   document.getElementById('payBtn').style.display = 'none';
-  document.getElementById('payCancelBtn').style.display = 'none';
   document.getElementById('payStatusMsg').textContent = '';
-  // Global loading overlay for extra feedback
-  showGlobalLoading('Authorizing payment...');
 
-  // Simulate network processing (2.5s — realistic for MoMo)
+  // Simulate MTN processing
   setTimeout(() => {
-    hideGlobalLoading();
     document.getElementById('payProcessing').style.display = 'none';
     document.getElementById('payResult').style.display = 'block';
     document.getElementById('payResult').className = 'pay-result success';
     document.getElementById('payResultIcon').innerHTML = '<i class="fas fa-check-circle"></i>';
-    document.getElementById('payResultTitle').textContent = 'Payment Successful!';
-    document.getElementById('payResultMsg').textContent = 'GH₵' + parseFloat(localStorage.getItem('pendingTotal')||0).toFixed(2) + ' has been sent. Your order is confirmed. You will receive an SMS confirmation shortly.';
+    document.getElementById('payResultTitle').textContent = 'Payment Sent!';
+    document.getElementById('payResultMsg').textContent = 'GH₵' + parseFloat(localStorage.getItem('pendingTotal')||0).toFixed(2) + ' sent from your wallet. Your order is confirmed.';
     document.getElementById('payBtn').style.display = 'flex';
     document.getElementById('payBtn').disabled = false;
-    document.getElementById('payBtnText').textContent = 'View Receipt';
-    document.getElementById('payCancelBtn').style.display = 'none';
+    document.getElementById('payBtnText').textContent = 'View Receipt →';
 
     submitOrderAfterPayment();
-  }, 2500);
+  }, 2000);
 }
 
 function submitOrderAfterPayment() {
-  // Brief global loading while order is submitted
-  showGlobalLoading('Placing your order...');
-
   const name = localStorage.getItem('custName') || '';
   const phone = localStorage.getItem('custPhone') || '';
   const email = localStorage.getItem('custEmail') || '';
@@ -2574,18 +2574,18 @@ function submitOrderAfterPayment() {
   const orderId = localStorage.getItem('pendingOrderId') || ('CHOP-' + Date.now().toString().slice(-6));
   const total = parseFloat(localStorage.getItem('pendingTotal')) || getCartTotal() + (getCartTotal() >= 100 ? 0 : 5);
 
+  // Send order to Formspree (email) + trigger SMS
   sendOrderToServer(orderId, name, phone, email, address, city, notes, payMethod, total);
-  sendSMSNotification(orderId, total, name, phone);
+
   localStorage.setItem('lastOrderId', orderId);
   localStorage.setItem('lastOrderTotal', total);
-
-  setTimeout(() => hideGlobalLoading(), 1200);
 }
 
 async function sendOrderToServer(orderId, name, phone, email, address, city, notes, payMethod, total) {
   const delivery = getCartTotal() >= 100 ? 0 : 5;
   const itemsList = cart.map(i => `• ${i.name} ×${i.qty} — GH₵${(i.price * i.qty).toFixed(2)}`).join('\\n');
-  showGlobalLoading('Sending order...');
+  // SMS notification to both business numbers
+  sendSMSNotification(orderId, total, name, phone, payMethod);
   try {
     const resp = await fetch(FORMSPREE_URL, {
       method: 'POST',
@@ -2604,14 +2604,15 @@ async function sendOrderToServer(orderId, name, phone, email, address, city, not
         orderItems: itemsList
       })
     });
-    if (resp.ok) console.log('✅ Order sent to server');
-    hideGlobalLoading();
-  } catch (e) { console.log('📧 Order queued'); hideGlobalLoading(); }
+  } catch (e) {}
 }
 
-function sendSMSNotification(orderId, total, name, phone) {
-  console.log(`📱 SMS sent to ${SHOP_SMS_NUMBER} & ${SHOP_SMS2}`);
-  console.log(`📋 Order #${orderId} | ${name} | GH₵${total.toFixed(2)} | ${phone}`);
+function sendSMSNotification(orderId, total, name, phone, payMethod) {
+  const smsBody = `Chop Order #${orderId}: ${name} | GH₵${total.toFixed(2)} | ${phone} | ${payMethod}`;
+  window.open(`sms:${SHOP_NUMBER_MTN}?body=${encodeURIComponent(smsBody)}`, '_blank');
+  setTimeout(() => {
+    window.open(`sms:${SHOP_NUMBER_TELECEL}?body=${encodeURIComponent(smsBody)}`, '_blank');
+  }, 600);
 }
 
 function finalizeReceipt() {
@@ -2732,7 +2733,9 @@ function showReceipt(orderId, total, name, phone, email, address, city, notes, p
     </div>
       <div style="margin-top:0.5rem;background:linear-gradient(135deg,rgba(37,211,102,0.08),rgba(37,211,102,0.03));border:1px solid rgba(37,211,102,0.2);border-radius:10px;padding:10px 14px;font-size:0.73rem;color:rgba(39,4,4,0.65);line-height:1.6">
         <i class="fas fa-info-circle" style="color:#25D366;margin-right:6px"></i>
-        <strong style="color:var(--dark)">What happens next:</strong> The Chop team will review your order and respond to you via SMS within minutes to confirm delivery time. No WhatsApp needed — everything goes through SMS & email.
+        <strong style="color:var(--dark)">What happens next:</strong> Your order has been sent to the Chop team via SMS and email. You'll receive an SMS confirmation on <strong>${phone}</strong> shortly with your delivery time.
+        ${phone ? `<br><br><a href="sms:${phone}?body=Hi%20${encodeURIComponent(name)}%2C%20your%20Chop%20order%20%23${encodeURIComponent(orderId)}%20is%20confirmed!%20Delivery%20ETA%3A%2030-45%20mins.%20%E2%80%93%20Chop%20Team" style="color:var(--amber);font-weight:700;text-decoration:underline;font-size:0.75rem">📲 Tap here to confirm via SMS to this customer</a> (for business owner)` : ''}
+      </div>
       </div>
     </div>
   `;
